@@ -1,0 +1,200 @@
+export const mockArtists = [
+  {
+    spotifyId: 'artist-tems',
+    name: 'Tems',
+    genres: ['Alté', 'R&B', 'Afrobeats'],
+    broadFamily: 'Rhythm & Soul',
+    country: 'Nigeria',
+    region: 'Africa',
+    language: 'English',
+    popularity: 82,
+    followers: 5200000,
+    imageUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80',
+    spotifyUrl: 'https://open.spotify.com/',
+    bio: 'Smoky, intimate vocals with moody production and crossover appeal.',
+    audioProfile: {
+      danceability: 0.68,
+      energy: 0.59,
+      acousticness: 0.34,
+      instrumentalness: 0.01,
+      liveness: 0.12,
+      valence: 0.42,
+      tempo: 110,
+      durationMs: 214000,
+      loudness: -7.2
+    },
+    discoveryScore: 91,
+    noveltyScore: 72,
+    overlapScore: 84,
+    whyRecommended: [
+      'Matches your preference for warm vocals and mid-tempo grooves.',
+      'Expands your listening into West African scenes without a sharp style jump.',
+      'Lower mainstream saturation than your usual saved artists.'
+    ]
+  },
+  {
+    spotifyId: 'artist-stromae',
+    name: 'Stromae',
+    genres: ['French Pop', 'Electropop'],
+    broadFamily: 'Pop & Electronic',
+    country: 'Belgium',
+    region: 'Europe',
+    language: 'French',
+    popularity: 78,
+    followers: 4600000,
+    imageUrl: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=900&q=80',
+    spotifyUrl: 'https://open.spotify.com/',
+    bio: 'Sharp lyricism, art-pop production, and emotionally layered dance records.',
+    audioProfile: {
+      danceability: 0.74,
+      energy: 0.71,
+      acousticness: 0.14,
+      instrumentalness: 0.0,
+      liveness: 0.18,
+      valence: 0.45,
+      tempo: 116,
+      durationMs: 201000,
+      loudness: -6.4
+    },
+    discoveryScore: 88,
+    noveltyScore: 76,
+    overlapScore: 79,
+    whyRecommended: [
+      'Strong fit with your preference for lyrical depth and danceable production.',
+      'Adds French-language variety without breaking your electronic-pop comfort zone.',
+      'Balances recognisable appeal with non-Anglophone discovery.'
+    ]
+  },
+  {
+    spotifyId: 'artist-rosalia',
+    name: 'ROSALÍA',
+    genres: ['Art Pop', 'Flamenco Pop', 'Urbano'],
+    broadFamily: 'Pop & Electronic',
+    country: 'Spain',
+    region: 'Europe',
+    language: 'Spanish',
+    popularity: 84,
+    followers: 6900000,
+    imageUrl: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80',
+    spotifyUrl: 'https://open.spotify.com/',
+    bio: 'Experimental Spanish-language pop with rhythmic tension and vocal flair.',
+    audioProfile: {
+      danceability: 0.71,
+      energy: 0.69,
+      acousticness: 0.19,
+      instrumentalness: 0.0,
+      liveness: 0.15,
+      valence: 0.49,
+      tempo: 121,
+      durationMs: 198000,
+      loudness: -5.8
+    },
+    discoveryScore: 86,
+    noveltyScore: 67,
+    overlapScore: 81,
+    whyRecommended: [
+      'Similar energy profile to your upbeat favourites.',
+      'Spanish-language crossover broadens language coverage in a natural way.',
+      'Distinctive rhythmic textures add discovery diversity.'
+    ]
+  },
+  {
+    spotifyId: 'artist-khruangbin',
+    name: 'Khruangbin',
+    genres: ['Psychedelic Funk', 'Indie Soul'],
+    broadFamily: 'Alternative & Indie',
+    country: 'United States',
+    region: 'North America',
+    language: 'Instrumental / Minimal Vocals',
+    popularity: 70,
+    followers: 2300000,
+    imageUrl: 'https://images.unsplash.com/photo-1501612780327-45045538702b?auto=format&fit=crop&w=900&q=80',
+    spotifyUrl: 'https://open.spotify.com/',
+    bio: 'Groove-rich, globally influenced instrumental indie with relaxed pacing.',
+    audioProfile: {
+      danceability: 0.67,
+      energy: 0.44,
+      acousticness: 0.39,
+      instrumentalness: 0.61,
+      liveness: 0.1,
+      valence: 0.58,
+      tempo: 97,
+      durationMs: 246000,
+      loudness: -9.8
+    },
+    discoveryScore: 83,
+    noveltyScore: 81,
+    overlapScore: 74,
+    whyRecommended: [
+      'Matches your preference for groove without overemphasising chart popularity.',
+      'Improves instrumental coverage in your recommendation mix.',
+      'Creates a calmer bridge between soul, indie, and world-influenced sounds.'
+    ]
+  },
+  {
+    spotifyId: 'artist-burna-boy',
+    name: 'Burna Boy',
+    genres: ['Afrofusion', 'Afrobeats', 'Dancehall'],
+    broadFamily: 'Rhythm & Soul',
+    country: 'Nigeria',
+    region: 'Africa',
+    language: 'English',
+    popularity: 85,
+    followers: 8000000,
+    imageUrl: 'https://images.unsplash.com/photo-1504704911898-68304a7d2807?auto=format&fit=crop&w=900&q=80',
+    spotifyUrl: 'https://open.spotify.com/',
+    bio: 'Big rhythmic records with Afro-fusion depth and crossover power.',
+    audioProfile: {
+      danceability: 0.77,
+      energy: 0.73,
+      acousticness: 0.11,
+      instrumentalness: 0.0,
+      liveness: 0.22,
+      valence: 0.64,
+      tempo: 106,
+      durationMs: 209000,
+      loudness: -5.9
+    },
+    discoveryScore: 84,
+    noveltyScore: 61,
+    overlapScore: 86,
+    whyRecommended: [
+      'High compatibility with your preference for rhythmic, vocal-led music.',
+      'Supports regional diversification beyond US-heavy listening patterns.',
+      'Provides a strong like-probability anchor inside your discovery feed.'
+    ]
+  },
+  {
+    spotifyId: 'artist-mitski',
+    name: 'Mitski',
+    genres: ['Indie Rock', 'Art Pop'],
+    broadFamily: 'Alternative & Indie',
+    country: 'United States',
+    region: 'North America',
+    language: 'English',
+    popularity: 76,
+    followers: 5000000,
+    imageUrl: 'https://images.unsplash.com/photo-1487180144351-b8472da7d491?auto=format&fit=crop&w=900&q=80',
+    spotifyUrl: 'https://open.spotify.com/',
+    bio: 'Emotionally intense songwriting with indie and art-pop textures.',
+    audioProfile: {
+      danceability: 0.49,
+      energy: 0.56,
+      acousticness: 0.31,
+      instrumentalness: 0.0,
+      liveness: 0.11,
+      valence: 0.29,
+      tempo: 102,
+      durationMs: 191000,
+      loudness: -7.0
+    },
+    discoveryScore: 79,
+    noveltyScore: 70,
+    overlapScore: 68,
+    whyRecommended: [
+      'Aligns with your preference for emotionally expressive artists.',
+      'Introduces more lyric-forward indie contrast to balance rhythmic recommendations.',
+      'Moderate popularity keeps the feed varied without becoming too obscure.'
+    ]
+  }
+]

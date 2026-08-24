@@ -1,0 +1,15 @@
+# Frontend
+song-bird/.env
+song-bird/.env.local
+song-bird/node_modules/
+song-bird/dist/
+
+# Backend
+song-bird-api/.env
+song-bird-api/.venv/
+song-bird-api/__pycache__/
+song-bird-api/**/*.pyc
+
+# Operating system/editor
+.DS_Store
+.vscode/

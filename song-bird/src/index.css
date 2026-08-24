@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  --font-body: "Quicksand", sans-serif;
+
+  --berry-crush: #B8336A;
+  --wisteria: #C490D1;
+  --periwinkle: #ACACDE;
+  --icy-blue: #ABDAFC;
+  --azure-mist: #E5FCFF;
+
+  --songbird-bg: #fffdfb;
+  --songbird-surface: #ffffff;
+  --songbird-surface-soft: #f7f7fb;
+  --songbird-border: #e7def0;
+  --songbird-text: #1f2340;
+  --songbird-text-soft: #5e6280;
+  --songbird-navy: #1d2340;
+  --songbird-beige: #f8f1ea;
+  --songbird-success: #2d8a66;
+  --songbird-danger: #d94b74;
+  --songbird-shadow: 0 10px 30px rgba(29, 35, 64, 0.08);
+}
+
+@theme {
+  --font-sans: var(--font-body);
+
+  --color-berry-crush: var(--berry-crush);
+  --color-wisteria: var(--wisteria);
+  --color-periwinkle: var(--periwinkle);
+  --color-icy-blue: var(--icy-blue);
+  --color-azure-mist: var(--azure-mist);
+
+  --color-songbird-bg: var(--songbird-bg);
+  --color-songbird-surface: var(--songbird-surface);
+  --color-songbird-surface-soft: var(--songbird-surface-soft);
+  --color-songbird-border: var(--songbird-border);
+  --color-songbird-text: var(--songbird-text);
+  --color-songbird-text-soft: var(--songbird-text-soft);
+  --color-songbird-navy: var(--songbird-navy);
+  --color-songbird-beige: var(--songbird-beige);
+  --color-songbird-success: var(--songbird-success);
+  --color-songbird-danger: var(--songbird-danger);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background:
+    radial-gradient(circle at top left, rgba(196, 144, 209, 0.18), transparent 30%),
+    radial-gradient(circle at top right, rgba(171, 218, 252, 0.22), transparent 35%),
+    linear-gradient(180deg, #fffdfb 0%, #f8fbff 100%);
+  color: var(--songbird-text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+.songbird-shell {
+  @apply min-h-screen bg-transparent text-songbird-text;
+}
+
+.songbird-card {
+  @apply rounded-3xl border border-songbird-border bg-songbird-surface shadow-[0_10px_30px_rgba(29,35,64,0.08)];
+}
+
+.songbird-pill {
+  @apply inline-flex items-center gap-2 rounded-full border border-songbird-border bg-white px-3 py-1 text-sm font-semibold text-songbird-text-soft;
+}
+
+.songbird-section {
+  @apply space-y-4 rounded-3xl border border-songbird-border bg-white/90 p-5 shadow-[0_10px_30px_rgba(29,35,64,0.06)] backdrop-blur;
+}
+
+.songbird-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.songbird-scrollbar::-webkit-scrollbar-thumb {
+  background: #d8c5e4;
+  border-radius: 9999px;
+}
+
+.songbird-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
