@@ -14,7 +14,10 @@ export default function AccountPage() {
   const [searchParams] = useSearchParams()
 
   const [confirmation, setConfirmation] = useState('')
-  const [status, setStatus] = useState({ type: '', message: '' })
+  const [status, setStatus] = useState({
+    type: '',
+    message: '',
+  })
   const [deleting, setDeleting] = useState(false)
 
   const [spotifyStatus, setSpotifyStatus] = useState({
@@ -50,45 +53,63 @@ export default function AccountPage() {
           topArtists: connection.topArtists ?? [],
           spotifyDisplayName: connection.spotifyDisplayName ?? '',
         })
+
+        const spotifyResult = searchParams.get('spotify')
+
+        if (connection.connected) {
+          setStatus({
+            type: 'success',
+            message:
+              spotifyResult === 'connected'
+                ? 'Spotify connected successfully. Your top artists are available below.'
+                : 'Spotify is connected to your Song Bird account.',
+          })
+        } else if (spotifyResult === 'denied') {
+          setStatus({
+            type: 'error',
+            message: 'Spotify connection was cancelled.',
+          })
+        } else if (
+          spotifyResult === 'failed' ||
+          spotifyResult === 'token_failed' ||
+          spotifyResult === 'expired'
+        ) {
+          setStatus({
+            type: 'error',
+            message:
+              'Spotify could not be connected. Please try again from this page.',
+          })
+        }
+
+        if (spotifyResult) {
+          window.setTimeout(() => {
+            navigate('/account', { replace: true })
+          }, 120)
+        }
       } catch (error) {
+        console.error('Could not load Spotify status:', error)
+
         if (active) {
           setSpotifyStatus((current) => ({
             ...current,
             loading: false,
           }))
+
+          setStatus({
+            type: 'error',
+            message:
+              'Could not verify your Spotify connection. Refresh the page and try again.',
+          })
         }
       }
     }
 
     loadSpotifyStatus()
 
-    const spotifyResult = searchParams.get('spotify')
-
-    if (spotifyResult === 'connected') {
-      setStatus({
-        type: 'success',
-        message: 'Spotify connected. Your top artists are now available below.',
-      })
-    }
-
-    if (spotifyResult === 'denied') {
-      setStatus({
-        type: 'error',
-        message: 'Spotify connection was cancelled.',
-      })
-    }
-
-    if (spotifyResult === 'failed' || spotifyResult === 'token_failed') {
-      setStatus({
-        type: 'error',
-        message: 'Spotify could not be connected. Please try again.',
-      })
-    }
-
     return () => {
       active = false
     }
-  }, [user, searchParams])
+  }, [user, searchParams, navigate])
 
   async function handleDeleteAccount(event) {
     event.preventDefault()
@@ -108,7 +129,7 @@ export default function AccountPage() {
     }
 
     const accepted = window.confirm(
-      'Permanently delete your Song Bird account and all saved data? This cannot be undone.'
+      'Permanently delete your Song Bird account, saved preferences, feedback, playlists, history, and Spotify connection? This cannot be undone.'
     )
 
     if (!accepted) {
@@ -131,9 +152,13 @@ export default function AccountPage() {
         navigate('/', { replace: true })
       }, 1000)
     } catch (error) {
+      console.error('Account deletion failed:', error)
+
       setStatus({
         type: 'error',
-        message: error.message || 'Your account could not be deleted.',
+        message:
+          error.message ||
+          'Your account could not be deleted. Please try again.',
       })
     } finally {
       setDeleting(false)
@@ -146,12 +171,16 @@ export default function AccountPage() {
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-berry-crush">
           Account
         </p>
+
         <h1 className="mt-2 text-3xl font-bold text-songbird-navy">
           Save your Song Bird profile
         </h1>
-        <p className="mt-3 text-sm leading-7 text-songbird-text-soft">
-          Sign in to save feedback, controls, playlists, and connect a music service.
+
+        <p className="mt-3 max-w-2xl text-sm leading-7 text-songbird-text-soft">
+          Create an account to save likes, dislikes, geographic discovery controls,
+          playlists, and a connected music-service profile between sessions.
         </p>
+
         <button
           onClick={() => navigate('/auth')}
           className="mt-5 rounded-full bg-berry-crush px-5 py-3 text-sm font-bold text-white"
@@ -168,9 +197,16 @@ export default function AccountPage() {
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-berry-crush">
           Account
         </p>
+
         <h1 className="mt-2 text-3xl font-bold text-songbird-navy">
           Your Song Bird account
         </h1>
+
+        <p className="mt-3 text-sm leading-7 text-songbird-text-soft">
+          Your profile stores feedback and recommendation controls. Your connected
+          Spotify account provides top-artist signals for future discovery
+          personalisation.
+        </p>
 
         <dl className="mt-5 grid gap-4 sm:grid-cols-2">
           <div className="rounded-2xl bg-songbird-surface-soft p-4">
@@ -203,77 +239,98 @@ export default function AccountPage() {
         </h2>
 
         <p className="mt-2 max-w-2xl text-sm leading-7 text-songbird-text-soft">
-          Import your top Spotify artists to seed Song Bird’s taste profile. Song Bird
-          uses this to personalise discovery; listening continues in Spotify.
+          Connect Spotify to view your top artists in Song Bird. These artists will
+          later be used as an additional taste signal for the hybrid recommendation
+          system, while playback continues in Spotify.
         </p>
 
-        {spotifyStatus.connected ? (
-          <div className="mt-5 rounded-2xl bg-emerald-50 p-4">
-            <p className="text-sm font-bold text-emerald-700">
-              Connected as {spotifyStatus.spotifyDisplayName || 'Spotify user'}
-            </p>
-            <p className="mt-1 text-sm text-emerald-700">
-              Imported top artists: {spotifyStatus.topArtists.length}
-            </p>
-          </div>
-        ) : (
-          <button
-            onClick={startSpotifyConnection}
-            className="mt-5 rounded-full bg-[#1DB954] px-5 py-3 text-sm font-bold text-white"
-          >
-            Connect Spotify
-          </button>
-        )}
-
         {spotifyStatus.loading ? (
-          <p className="mt-4 text-sm text-songbird-text-soft">
-            Checking Spotify connection…
+          <p className="mt-5 text-sm text-songbird-text-soft">
+            Checking your Spotify connection…
           </p>
         ) : null}
 
-        {spotifyStatus.connected && spotifyStatus.topArtists.length > 0 ? (
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {spotifyStatus.topArtists.slice(0, 9).map((artist) => (
-              <article
-                key={artist.spotifyId}
-                className="rounded-2xl bg-songbird-surface-soft p-3"
-              >
-                <div className="flex items-center gap-3">
-                  {artist.imageUrl ? (
-                    <img
-                      src={artist.imageUrl}
-                      alt={artist.name}
-                      className="h-12 w-12 rounded-xl object-cover"
-                    />
-                  ) : (
-                    <div className="h-12 w-12 rounded-xl bg-wisteria/30" />
-                  )}
+        {!spotifyStatus.loading && !spotifyStatus.connected ? (
+          <button
+            onClick={startSpotifyConnection}
+            className="mt-5 rounded-full bg-[#1DB954] px-5 py-3 text-sm font-bold text-white transition hover:brightness-95"
+          >
+            Connect Spotify
+          </button>
+        ) : null}
 
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-bold text-songbird-text">
-                      {artist.name}
-                    </p>
-                    <p className="truncate text-xs text-songbird-text-soft">
-                      {artist.genres.slice(0, 2).join(' · ') || 'Spotify artist'}
-                    </p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+        {!spotifyStatus.loading && spotifyStatus.connected ? (
+          <>
+            <div className="mt-5 rounded-2xl bg-emerald-50 p-4">
+              <p className="text-sm font-bold text-emerald-700">
+                Connected as{' '}
+                {spotifyStatus.spotifyDisplayName || 'Spotify user'}
+              </p>
+
+              <p className="mt-1 text-sm text-emerald-700">
+                Top artists available: {spotifyStatus.topArtists.length}
+              </p>
+            </div>
+
+            {spotifyStatus.topArtists.length > 0 ? (
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {spotifyStatus.topArtists.slice(0, 9).map((artist) => (
+                  <article
+                    key={artist.spotifyId}
+                    className="rounded-2xl bg-songbird-surface-soft p-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      {artist.imageUrl ? (
+                        <img
+                          src={artist.imageUrl}
+                          alt={artist.name}
+                          className="h-12 w-12 rounded-xl object-cover"
+                        />
+                      ) : (
+                        <div className="h-12 w-12 rounded-xl bg-wisteria/30" />
+                      )}
+
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-bold text-songbird-text">
+                          {artist.name}
+                        </p>
+
+                        <p className="truncate text-xs text-songbird-text-soft">
+                          {artist.genres?.slice(0, 2).join(' · ') ||
+                            'Spotify artist'}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <p className="mt-5 text-sm text-songbird-text-soft">
+                Spotify is connected, but no top artists were returned for the current
+                time range.
+              </p>
+            )}
+
+            <p className="mt-5 text-xs leading-5 text-songbird-text-soft">
+              Note: this current prototype connection is stored in FastAPI memory.
+              If the backend restarts, reconnect Spotify. Persistent encrypted token
+              storage will be added after the catalogue and recommendation algorithm
+              are stable.
+            </p>
+          </>
         ) : null}
       </section>
 
       {status.message ? (
-        <p
-          className={`rounded-2xl px-4 py-3 text-sm ${
+        <section
+          className={`rounded-2xl px-4 py-3 text-sm leading-6 ${
             status.type === 'success'
               ? 'bg-emerald-50 text-emerald-700'
               : 'bg-rose-50 text-rose-700'
           }`}
         >
           {status.message}
-        </p>
+        </section>
       ) : null}
 
       <section className="rounded-3xl border border-rose-200 bg-rose-50 p-5 sm:p-6">
@@ -286,8 +343,9 @@ export default function AccountPage() {
         </h2>
 
         <p className="mt-2 max-w-2xl text-sm leading-7 text-rose-800">
-          This permanently deletes your profile, preferences, feedback, and future
-          stored music-service connection data.
+          Deletion permanently removes your Song Bird account, saved profile,
+          preferences, feedback, playlists, recommendation history, and future
+          connected music-service records.
         </p>
 
         <form className="mt-5 max-w-md space-y-4" onSubmit={handleDeleteAccount}>
@@ -295,6 +353,7 @@ export default function AccountPage() {
             <span className="text-sm font-bold text-rose-900">
               Type DELETE to confirm
             </span>
+
             <input
               type="text"
               value={confirmation}
@@ -309,7 +368,7 @@ export default function AccountPage() {
           <button
             type="submit"
             disabled={deleting || confirmation !== 'DELETE'}
-            className="rounded-full bg-rose-700 px-5 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-full bg-rose-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-rose-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {deleting ? 'Deleting account…' : 'Delete my account permanently'}
           </button>

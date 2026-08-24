@@ -32,7 +32,9 @@ export async function getSpotifyConnectionStatus() {
   const body = await response.json()
 
   if (!response.ok) {
-    throw new Error(body?.detail || 'Could not load Spotify connection status.')
+    throw new Error(
+      body?.detail || 'Could not load Spotify connection status.'
+    )
   }
 
   return body
