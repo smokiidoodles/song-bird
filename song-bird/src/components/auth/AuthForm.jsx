@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthSession } from '../../hooks/useAuthSession'
 import { signInWithEmail, signUpWithEmail } from '../../services/authService'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 export default function AuthForm() {
   const navigate = useNavigate()
@@ -154,6 +154,15 @@ export default function AuthForm() {
               : 'Sign in'}
         </button>
       </form>
+
+      {!isSignUp ? (
+  <Link
+    to="/forgot-password"
+    className="block text-center text-sm font-bold text-songbird-text-soft hover:text-berry-crush"
+  >
+    Forgot your password?
+  </Link>
+) : null}
 
       <button
         type="button"

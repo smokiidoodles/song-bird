@@ -11,6 +11,8 @@ import GraphPage from './pages/GraphPage'
 import AuthPage from './pages/AuthPage'
 import { SongbirdStateProvider } from './hooks/useSongbirdState'
 import AccountPage from './pages/AccountPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 
 function SongBirdApp() {
   return (
@@ -26,6 +28,8 @@ function SongBirdApp() {
           <Route path="/playlists" element={<PlaylistPage />} />
           <Route path="/insights" element={<InsightsPage />} />
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AppShell>

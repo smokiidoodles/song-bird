@@ -29,7 +29,7 @@ export async function getSpotifyConnectionStatus() {
     `${apiBaseUrl}/api/spotify/status?user_id=${encodeURIComponent(userId)}`
   )
 
-  const body = await response.json()
+  const body = await response.json().catch(() => null)
 
   if (!response.ok) {
     throw new Error(
@@ -38,4 +38,15 @@ export async function getSpotifyConnectionStatus() {
   }
 
   return body
+}
+
+/*
+  In the current local/simple Spotify implementation, this requests the
+  latest available top-artist response from the active backend session.
+
+  If Render/FastAPI restarts, the temporary session disappears and the user
+  must connect Spotify again. Persistent refresh-token storage is a later step.
+*/
+export async function refreshSpotifyData() {
+  return getSpotifyConnectionStatus()
 }

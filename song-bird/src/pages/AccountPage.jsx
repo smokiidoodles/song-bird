@@ -5,6 +5,7 @@ import { signOut } from '../services/authService'
 import { deleteCurrentAccount } from '../services/apiService'
 import {
   getSpotifyConnectionStatus,
+  refreshSpotifyData,
   startSpotifyConnection,
 } from '../services/spotifyService'
 
@@ -19,6 +20,7 @@ export default function AccountPage() {
     message: '',
   })
   const [deleting, setDeleting] = useState(false)
+  const [refreshingSpotify, setRefreshingSpotify] = useState(false)
 
   const [spotifyStatus, setSpotifyStatus] = useState({
     loading: false,
@@ -110,6 +112,35 @@ export default function AccountPage() {
       active = false
     }
   }, [user, searchParams, navigate])
+
+  async function handleRefreshSpotifyData() {
+    setRefreshingSpotify(true)
+
+    try {
+      const connection = await refreshSpotifyData()
+
+      setSpotifyStatus({
+        loading: false,
+        connected: connection.connected,
+        topArtists: connection.topArtists ?? [],
+        spotifyDisplayName: connection.spotifyDisplayName ?? '',
+      })
+
+      setStatus({
+        type: 'success',
+        message: 'Spotify top-artist data refreshed.',
+      })
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message:
+          error.message ||
+          'Could not refresh Spotify data. Reconnect Spotify and try again.',
+      })
+    } finally {
+      setRefreshingSpotify(false)
+    }
+  }
 
   async function handleDeleteAccount(event) {
     event.preventDefault()
@@ -239,9 +270,9 @@ export default function AccountPage() {
         </h2>
 
         <p className="mt-2 max-w-2xl text-sm leading-7 text-songbird-text-soft">
-          Connect Spotify to view your top artists in Song Bird. These artists will
-          later be used as an additional taste signal for the hybrid recommendation
-          system, while playback continues in Spotify.
+          Connect Spotify to view your top artists in Song Bird. These artists later
+          become a personalised seed signal for recommendation ranking while playback
+          continues in Spotify.
         </p>
 
         {spotifyStatus.loading ? (
@@ -271,6 +302,16 @@ export default function AccountPage() {
                 Top artists available: {spotifyStatus.topArtists.length}
               </p>
             </div>
+
+            <button
+              onClick={handleRefreshSpotifyData}
+              disabled={refreshingSpotify}
+              className="mt-4 rounded-full border border-songbird-border bg-white px-4 py-2 text-sm font-bold text-songbird-text transition hover:bg-songbird-surface-soft disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {refreshingSpotify
+                ? 'Refreshing Spotify data…'
+                : 'Refresh Spotify data'}
+            </button>
 
             {spotifyStatus.topArtists.length > 0 ? (
               <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -307,15 +348,14 @@ export default function AccountPage() {
             ) : (
               <p className="mt-5 text-sm text-songbird-text-soft">
                 Spotify is connected, but no top artists were returned for the current
-                time range.
+                listening period.
               </p>
             )}
 
             <p className="mt-5 text-xs leading-5 text-songbird-text-soft">
-              Note: this current prototype connection is stored in FastAPI memory.
-              If the backend restarts, reconnect Spotify. Persistent encrypted token
-              storage will be added after the catalogue and recommendation algorithm
-              are stable.
+              This prototype refreshes Spotify data from the active backend session.
+              If the backend restarts, reconnect Spotify. Persistent refresh-token
+              storage will be added once the catalogue and recommender are stable.
             </p>
           </>
         ) : null}

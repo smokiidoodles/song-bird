@@ -40,3 +40,25 @@ export async function signOut() {
     throw error
   }
 }
+
+export async function requestPasswordReset(email) {
+  const redirectTo = `${window.location.origin}/reset-password`
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo,
+  })
+
+  if (error) {
+    throw error
+  }
+}
+
+export async function updatePassword(password) {
+  const { error } = await supabase.auth.updateUser({
+    password,
+  })
+
+  if (error) {
+    throw error
+  }
+}
